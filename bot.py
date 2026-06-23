@@ -2,7 +2,7 @@ import discord
 import requests
 import time
 
-TOKEN = "MTUxODk3MTYxMzMzMTA2MjgxNA.GZ0wMn.giPg0UQSWTh0-bwThRT_OhQfXvfkGbXWqOBPeI"
+TOKEN = "MTUxODk3MTYxMzMzMTA2MjgxNA.GzMOR4.5N5QcbZaQR2DhmauAR1ogpATB10kMagEFkrBCQ"
 CHANNEL_ID = 1518970034175742184
 
 client = discord.Client(intents=discord.Intents.default())
