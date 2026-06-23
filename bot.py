@@ -15,6 +15,25 @@ import requests
 import os
 import time
 import xml.etree.ElementTree as ET
+import asyncio
+
+last_post = None
+
+async def check_posts():
+    global last_post
+
+    await client.wait_until_ready()
+
+    while not client.is_closed():
+        tweet, link = get_latest_post()
+
+        if tweet and tweet != last_post:
+            last_post = tweet
+
+            channel = client.get_channel(YOUR_CHANNEL_ID)
+            await channel.send(f"{tweet}\n{link}")
+
+        await asyncio.sleep(60)
 
 def get_latest_post():
     url = "https://twitrss.me/twitter_user_to_rss/?user=95rn16"
@@ -38,7 +57,6 @@ def get_latest_post():
 
 @client.event
 async def on_ready():
-    global last_post
     print("Bot 已上線")
 
     channel = client.get_channel(CHANNEL_ID)
@@ -57,6 +75,7 @@ async def on_ready():
         except Exception as e:
             print("錯誤:", e)
 
-        time.sleep(60)
+ await asyncio.sleep(60)
 
+client.loop.create_task(check_posts())
 client.run(TOKEN)
