@@ -10,8 +10,28 @@ client = discord.Client(intents=discord.Intents.default())
 
 last_post = None
 
-import snscrape.modules.twitter as sntwitter
+import discord
+import requests
+import os
+import time
+import xml.etree.ElementTree as ET
 
+def get_latest_post():
+    url = "https://twitrss.me/twitter_user_to_rss/?user=95rn16"
+    res = requests.get(url)
+    
+    if res.status_code != 200:
+        return None, None
+
+    import xml.etree.ElementTree as ET
+    root = ET.fromstring(res.text)
+
+    item = root.find(".//item")
+    title = item.find("title").text
+    link = item.find("link").text
+
+    return title, link
+    
 def get_latest_post():
     for tweet in sntwitter.TwitterUserScraper("95rn16").get_items():
         return tweet.content, tweet.url
